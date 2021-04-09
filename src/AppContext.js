@@ -1,14 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 export const AppContext = React.createContext();
-const taskLists = [
-  { id: 1, taskName: "First task", status: false },
-  { id: 2, taskName: "Second task", status: false },
-  { id: 3, taskName: "Third task", status: false }
-];
+
 const AppProvider = ({ children }) => {
-  const [taskList, setTaskList] = useState(taskLists);
-  const [isChecked, setIsChecked] = useState(false);
+  const [taskList, setTaskList] = useState([]);
+  // const [isChecked, setIsChecked] = useState(false);
 
   const [completedTask, setCompletedTask] = useState([]);
 
@@ -19,6 +15,9 @@ const AppProvider = ({ children }) => {
       status: status
     };
     setTaskList([...taskList, newTask]);
+    const convertString = JSON.stringify(taskList);
+
+    localStorage.setItem("taskList", convertString);
   };
   const completionStatus = (id, checkedStatus) => {
     const found = taskList.find((task) => task.id === id);
@@ -48,12 +47,17 @@ const AppProvider = ({ children }) => {
     setTaskList([...taskList, resetObj]);
   };
 
+  useEffect(() => {
+    const taskListFromStorage = localStorage.getItem("taskList");
+    // console.log(taskListFromStorage);
+    setTaskList(JSON.parse(taskListFromStorage));
+  }, []);
+
   return (
     <AppContext.Provider
       value={{
         taskList,
         addTaskToList,
-        isChecked,
         completionStatus,
         completedTask,
         resetStatus
