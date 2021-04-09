@@ -50,7 +50,11 @@ const AppProvider = ({ children }) => {
   useEffect(() => {
     const taskListFromStorage = localStorage.getItem("taskList");
     // console.log(taskListFromStorage);
-    setTaskList(JSON.parse(taskListFromStorage));
+    if (JSON.parse(taskListFromStorage)) {
+      setTaskList(JSON.parse(taskListFromStorage));
+    } else {
+      setTaskList([]);
+    }
   }, []);
 
   return (
