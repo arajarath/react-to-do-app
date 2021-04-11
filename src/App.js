@@ -6,14 +6,10 @@ import styled from "styled-components";
 
 export default function App() {
   return (
-    <Task>
+    <div>
       <TaskInput />
       <TaskList />
       <CompletedList />
-    </Task>
+    </div>
   );
 }
-
-const Task = styled.div`
-  margin: 0 auto;
-`;

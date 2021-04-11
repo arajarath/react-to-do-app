@@ -10,10 +10,11 @@ const TaskInput = () => {
     setTaskInput(e.target.value);
   };
   const addTask = (e) => {
-    if (e.target.value !== "" && e.target.value.trim() !== "") {
-      consumer.addTaskToList(taskInput);
+    if (taskInput !== "" && taskInput.trim() !== "") {
+      consumer.addTaskToList(taskInput, false);
       setTaskInput("");
     }
+    setTaskInput("");
   };
   return (
     <>
@@ -33,7 +34,7 @@ const TaskInput = () => {
 export default TaskInput;
 
 const Input = styled.input`
-  width: 70%;
+  width: 300px;
   padding: 11px;
   font-size: 16px;
   border-radius: 5px 0 0 5px;
@@ -41,11 +42,11 @@ const Input = styled.input`
   outline: 0;
 `;
 const Button = styled.button`
-  width: 20%;
-  padding: 12px;
+  width: 110px;
+  padding: 11px;
   font-size: 16px;
   color: #fff;
   background: #071d49;
-  border: none;
+  border: 2px solid #071d49;
   border-radius: 0 5px 5px 0;
 `;
