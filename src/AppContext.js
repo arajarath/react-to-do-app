@@ -73,21 +73,18 @@ const AppProvider = ({ children }) => {
   };
 
   const editTask = (task) => {
-    console.log(task); // const foundIndex = taskList.findIndex((tasks) => tasks.id === task.id);
-    // const newTask = [...taskList];
-    // newTask[foundIndex] = task;
-    // console.log(newTask);
-
-    // setTaskList(newTask);
     const temp = taskList;
     setTaskList(temp.map((item) => (item.id === task.id ? task : item)));
-    console.log(temp);
     const convertString = JSON.stringify(temp);
     localStorage.setItem("taskList", convertString);
   };
-  const editCompletedTask = (id) => {
-    const editedCompletedask = taskList.filter((task) => task.id === id);
-    console.log(editedCompletedask);
+  const editCompletedTask = (taskCompleted) => {
+    const temp = completedTask;
+    setCompletedTask(
+      temp.map((item) => (item.id === temp.id ? taskCompleted : item))
+    );
+    const convertString = JSON.stringify(temp);
+    localStorage.setItem("completedList", convertString);
   };
   useEffect(() => {
     const taskListFromStorage = localStorage.getItem("taskList");

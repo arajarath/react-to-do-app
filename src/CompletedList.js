@@ -1,9 +1,11 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { AppContext } from "./AppContext";
 import styled from "styled-components";
 import { TiDelete, TiEdit } from "react-icons/ti";
-
+import Edit from "./Edit";
 const CompletedList = () => {
+  const [editComp, setEditComp] = useState(null);
+
   const consumer = useContext(AppContext);
 
   const changeHandler = (id, status) => {
@@ -18,30 +20,41 @@ const CompletedList = () => {
   const editTask = (e, id) => {
     e.preventDefault();
     consumer.editCompletedTask(id);
+    setEditComp(id);
+  };
+
+  const editReset = () => {
+    setEditComp(null);
   };
   return (
     <>
-      {consumer.completedTask.length ? (
+      {consumer.completedTask.length > 0 && (
         <div>
           <h3>Completed List</h3>
-          {consumer.completedTask.map((task) => (
-            // <li key={task.id}>{task.taskName}</li>
-            <TaskListWrapper key={task.id}>
-              <TaskLabel>
-                <input
-                  type="checkbox"
-                  value={task.status}
-                  defaultChecked={task.status}
-                  onChange={(e) => changeHandler(task.id, e.target.checked)}
-                />
-                <EditIcon onClick={(e) => editTask(e, task.id)} />
-                <DeleteIcon onClick={(e) => deleteTask(e, task.id)} />
-                {task.taskName}
-              </TaskLabel>
-            </TaskListWrapper>
-          ))}
         </div>
-      ) : null}
+      )}
+
+      {consumer.completedTask.length
+        ? consumer.completedTask.map((task) =>
+            editComp !== null && task.id === editComp ? (
+              <Edit task={task} editReset={editReset} />
+            ) : (
+              <TaskListWrapper key={task.id}>
+                <TaskLabel>
+                  <input
+                    type="checkbox"
+                    value={task.status}
+                    defaultChecked={task.status}
+                    onChange={(e) => changeHandler(task.id, e.target.checked)}
+                  />
+                  <EditIcon onClick={(e) => editTask(e, task.id)} />
+                  <DeleteIcon onClick={(e) => deleteTask(e, task.id)} />
+                  {task.taskName}
+                </TaskLabel>
+              </TaskListWrapper>
+            )
+          )
+        : null}
     </>
   );
 };
